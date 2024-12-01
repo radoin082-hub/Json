@@ -1,0 +1,93 @@
+﻿@page "/"
+@using BlazorApp1.Model
+@using BlazorApp1.Service
+@inject JsonFileService JsonService
+@rendermode InteractiveServer
+
+<h3>Item Manager</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Items)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Category</td>
+                <td>
+                    <button class="btn-primary" @onclick="() => EditItem(item)">Edit</button>
+                    <button class="btn-danger"@onclick="() => DeleteItem(item.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>@(IsEditing ? "Edit Item" : "Add Item")</h4>
+<div>
+    <input type="number" @bind="CurrentItem.Id" placeholder="Id" />
+    <input type="text" @bind="CurrentItem.Name" placeholder="Name" />
+    <input type="text" @bind="CurrentItem.Description" placeholder="Description" />
+    <input type="text" @bind="CurrentItem.Category" placeholder="Category" />
+    <button @onclick="SaveItem">Save</button>
+</div>
+
+@code {
+    private List<Item> Items = new();
+    private Item CurrentItem = new();
+    private bool IsEditing = false;
+
+    protected override void OnInitialized()
+    {
+        Items = JsonService.GetAll();
+    }
+
+    private void SaveItem()
+    {
+        if (IsEditing)
+        {
+            JsonService.Update(CurrentItem);
+        }
+        else
+        {
+            JsonService.Add(CurrentItem);
+        }
+
+        Items = JsonService.GetAll();
+        ResetForm();
+    }
+
+    private void EditItem(Item item)
+    {
+        CurrentItem = new Item
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Description = item.Description,
+            Category = item.Category
+        };
+        IsEditing = true;
+    }
+
+    private void DeleteItem(int id)
+    {
+        JsonService.Delete(id);
+        Items = JsonService.GetAll();
+    }
+
+    private void ResetForm()
+    {
+        CurrentItem = new Item();
+        IsEditing = false;
+    }
+}
