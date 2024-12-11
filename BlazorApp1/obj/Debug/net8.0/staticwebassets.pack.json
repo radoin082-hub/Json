@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\Data.json"
     },
     {
+      "Id": "C:\\Users\\radoi\\RiderProjects\\ConsoleApp1\\BlazorApp1\\wwwroot\\User.json",
+      "PackagePath": "staticwebassets\\User.json"
+    },
+    {
       "Id": "C:\\Users\\radoi\\RiderProjects\\ConsoleApp1\\BlazorApp1\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },

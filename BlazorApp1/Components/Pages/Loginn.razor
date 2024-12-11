@@ -1,0 +1,53 @@
+﻿@page "/"
+@using BlazorApp1.Service
+@inject NavigationManager Navigation
+@inject LoginService LoginService
+@rendermode InteractiveServer
+
+<h3>Login</h3>
+
+<div>
+    <form>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" id="email" class="form-control" @bind="Email" placeholder="Enter your email" />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" class="form-control" @bind="Password" placeholder="Enter your password" />
+        </div>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="text-danger">@ErrorMessage</div>
+        }
+        <button type="button" class="btn btn-primary" @onclick="Login">Login</button>
+    </form>
+</div>
+
+@code {
+    private string Email;
+    private string Password;
+    private string ErrorMessage;
+
+    private async Task Login()
+    {
+        var user = LoginService.Authenticate(Email, Password);
+
+        if (user != null)
+        {
+            
+            if (user.Role == "ADM")
+            {
+                Navigation.NavigateTo("/admin");
+            }
+            else if (user.Role == "USER")
+            {
+                Navigation.NavigateTo("/product");
+            }
+        }
+        else
+        {
+            ErrorMessage = "it is over!";
+        }
+    }
+}

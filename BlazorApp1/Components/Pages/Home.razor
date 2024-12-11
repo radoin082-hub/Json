@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/admin"
 @using BlazorApp1.Model
 @using BlazorApp1.Service
 @inject JsonFileService JsonService
@@ -17,54 +17,82 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Items)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.Description</td>
-                <td>@item.Category</td>
-                <td>
-                    <button class="btn-primary" @onclick="() => EditItem(item)">Edit</button>
-                    <button class="btn-danger"@onclick="() => DeleteItem(item.Id)">Delete</button>
-                </td>
-            </tr>
-        }
+    @foreach (var item in Items)
+    {
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Name</td>
+        <td>@item.Description</td>
+        <td>@item.Category</td>
+        <td>
+            @if (item.ImageData != null)
+            {
+            <img src="@item.ImageBase64" alt="Image" class="img-thumbnail" style="max-height: 50px;" />
+            }
+        </td>
+        <td>
+            <button class="btn-primary" @onclick="() => EditItem(item)">Edit</button>
+            <button class="btn-danger" @onclick="() => DeleteItem(item.Id)">Delete</button>
+        </td>
+    </tr>
+    }
+    
     </tbody>
+
 </table>
 
-<h4>@(IsEditing ? "Edit Item" : "Add Item")</h4>
-<div>
-    <input type="number" @bind="CurrentItem.Id" placeholder="Id" />
-    <input type="text" @bind="CurrentItem.Name" placeholder="Name" />
-    <input type="text" @bind="CurrentItem.Description" placeholder="Description" />
-    <input type="text" @bind="CurrentItem.Category" placeholder="Category" />
-    <button @onclick="SaveItem">Save</button>
-</div>
+<button class="btn-success mt-3" @onclick="ShowAddPopup">Add New Item</button>
+
+@if (IsPopupVisible)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@PopupTitle</h5>
+                    <button type="button" class="btn-close" @onclick="ClosePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" class="form-control" @bind="CurrentItem.Name" placeholder="Enter name" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" id="description" class="form-control" @bind="CurrentItem.Description" placeholder="Enter description" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <input type="text" id="category" class="form-control" @bind="CurrentItem.Category" placeholder="Enter category" />
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn-primary" @onclick="SaveItem">Save</button>
+                    <button class="btn-secondary" @onclick="ClosePopup">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     private List<Item> Items = new();
     private Item CurrentItem = new();
     private bool IsEditing = false;
+    private bool IsPopupVisible = false;
+    private string PopupTitle = "Add Item";
 
     protected override void OnInitialized()
     {
         Items = JsonService.GetAll();
     }
 
-    private void SaveItem()
+    private void ShowAddPopup()
     {
-        if (IsEditing)
-        {
-            JsonService.Update(CurrentItem);
-        }
-        else
-        {
-            JsonService.Add(CurrentItem);
-        }
-
-        Items = JsonService.GetAll();
         ResetForm();
+        IsPopupVisible = true;
+        PopupTitle = "Add Item";
     }
 
     private void EditItem(Item item)
@@ -77,6 +105,31 @@
             Category = item.Category
         };
         IsEditing = true;
+        PopupTitle = "Edit Item";
+        IsPopupVisible = true;
+    }
+
+    private void SaveItem()
+    {
+        if (string.IsNullOrWhiteSpace(CurrentItem.Name) || string.IsNullOrWhiteSpace(CurrentItem.Category))
+        {
+            
+            return;
+        }
+
+        if (IsEditing)
+        {
+            JsonService.Update(CurrentItem);
+        }
+        else
+        {
+           
+            CurrentItem.Id = Items.Any() ? Items.Max(i => i.Id) + 1 : 1;
+            JsonService.Add(CurrentItem);
+        }
+
+        Items = JsonService.GetAll();
+        ClosePopup();
     }
 
     private void DeleteItem(int id)
@@ -85,9 +138,17 @@
         Items = JsonService.GetAll();
     }
 
+    private void ClosePopup()
+    {
+        ResetForm();
+        IsPopupVisible = false;
+    }
+
     private void ResetForm()
     {
         CurrentItem = new Item();
         IsEditing = false;
     }
+
+
 }

@@ -30,3 +30,4 @@ C:\Users\radoi\RiderProjects\ConsoleApp1\BlazorApp1\obj\Debug\net8.0\refint\Blaz
 C:\Users\radoi\RiderProjects\ConsoleApp1\BlazorApp1\obj\Debug\net8.0\BlazorApp1.pdb
 C:\Users\radoi\RiderProjects\ConsoleApp1\BlazorApp1\obj\Debug\net8.0\BlazorApp1.genruntimeconfig.cache
 C:\Users\radoi\RiderProjects\ConsoleApp1\BlazorApp1\obj\Debug\net8.0\ref\BlazorApp1.dll
+C:\Users\radoi\RiderProjects\ConsoleApp1\BlazorApp1\obj\Debug\net8.0\BlazorApp1.sourcelink.json

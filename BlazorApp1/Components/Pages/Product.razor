@@ -1,0 +1,32 @@
+﻿@page "/product"
+@using BlazorApp1.Model
+@using BlazorApp1.Service
+@inject JsonFileService JsonService
+
+<h3>Products</h3>
+
+<div class="row">
+    @foreach (var item in Products)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <span class="badge bg-primary">@item.Category</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Item> Products = new();
+
+    protected override void OnInitialized()
+    {
+        Products = JsonService.GetAll();
+    }
+
+}

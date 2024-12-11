@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pvCgqtKuxLgjJfd96ZAEW0Cs9C0wj4lXJ2RbiZcoh3w=",
+  "Hash": "MASUPKmjmyGGOn6+iwiklTXQGCdP4vU5wtafxjSE38I=",
   "Source": "BlazorApp1",
   "BasePath": "_content/BlazorApp1",
   "Mode": "Default",
@@ -148,6 +148,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\Users\\radoi\\RiderProjects\\ConsoleApp1\\BlazorApp1\\wwwroot\\User.json",
+      "SourceId": "BlazorApp1",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\radoi\\RiderProjects\\ConsoleApp1\\BlazorApp1\\wwwroot\\",
+      "BasePath": "_content/BlazorApp1",
+      "RelativePath": "User.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\User.json"
     }
   ]
 }
